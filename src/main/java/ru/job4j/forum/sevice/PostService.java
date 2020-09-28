@@ -6,6 +6,7 @@ import ru.job4j.forum.store.PostRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author madrabit on 25.09.2020
@@ -25,5 +26,13 @@ public class PostService {
         List<Post> rsl = new ArrayList<>();
         posts.findAll().forEach(rsl::add);
         return rsl;
+    }
+
+    public Optional<Post> findById(int id) {
+        return posts.findById((long) id);
+    }
+
+    public void create(Post post) {
+        posts.save(post);
     }
 }
