@@ -21,30 +21,14 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Qualifier("dataSource")
     @Autowired
     DataSource ds;
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(ds)
-//                .withUser(User.withUsername("user")
-//                        .password(passwordEncoder().encode("123456"))
-//                        .roles("USER"));
-//    }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(ds)
-//                .withUser(User.withUsername("user")
-//                        .password(passwordEncoder().encode("123456"))
-//                        .roles("USER"));
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -59,11 +43,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
+    /**
+     * defines which URL paths should be secured and which should not.
+     *
+     * @param http - HttpSecurity http
+     * @throws Exception - Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
